@@ -1,0 +1,522 @@
+/* ==========================================================================
+   Rohana Hettiarachchi & Company — Chartered Accountants
+   Auto-Landscape on Mobile (90deg rotation on Portrait Screens) + PC Landscape
+   One-Time On-Card Swipe Animation
+   ========================================================================== */
+
+:root {
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --brand-navy: #0f2547;
+  --brand-orange: #ea5b2b;
+  --text-dark: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --border-subtle: #e2e8f0;
+  --card-white: #ffffff;
+  --page-white: #f8fafc;
+
+  /* Canonical Landscape Business Card Dimensions */
+  --card-base-w: 560px;
+  --card-base-h: 344px;
+  --card-scale: 1;
+  --card-rotate-z: 0deg;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background-color: var(--page-white);
+  color: var(--text-dark);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Viewport Box & Auto-Rotating Scene
+   - On PC / Landscape (vw >= vh): --card-rotate-z: 0deg
+   - On Mobile Portrait (vw < vh): --card-rotate-z: 90deg (turns landscape!)
+   ========================================================================== */
+
+.card-viewport-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-scene {
+  position: relative;
+  width: var(--card-base-w);
+  height: var(--card-base-h);
+  perspective: 1800px;
+  -webkit-perspective: 1800px;
+  transform: rotate(var(--card-rotate-z)) scale(var(--card-scale));
+  transform-origin: center center;
+  flex-shrink: 0;
+}
+
+.business-card {
+  position: relative;
+  width: var(--card-base-w);
+  height: var(--card-base-h);
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  will-change: transform;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+.business-card:active {
+  cursor: grabbing;
+}
+
+.business-card img {
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* ==========================================================================
+   One-Time On-Card Swipe Overlay (Plays Once on the Card and Disappears)
+   ========================================================================== */
+
+.card-swipe-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+  animation: oneTimeSwipeOverlay 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.card-swipe-overlay.is-dismissed {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.swipe-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 26px 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(15, 37, 71, 0.1);
+  box-shadow: 0 18px 40px -8px rgba(15, 37, 71, 0.22);
+}
+
+.swipe-hand-svg {
+  overflow: visible;
+}
+
+.swipe-hand-group {
+  transform-origin: 52px 86px;
+  animation: handSwipeOnce 1.15s cubic-bezier(0.45, 0.05, 0.55, 0.95) 2;
+}
+
+.swipe-arc {
+  transform-origin: 65px 35px;
+  animation: swipeArcOnce 1.15s cubic-bezier(0.45, 0.05, 0.55, 0.95) 2;
+}
+
+@keyframes oneTimeSwipeOverlay {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+    visibility: visible;
+  }
+  14% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+    visibility: hidden;
+  }
+}
+
+@keyframes handSwipeOnce {
+  0%, 100% {
+    transform: translateX(-10px) rotate(-32deg);
+  }
+  50% {
+    transform: translateX(12px) rotate(-6deg);
+  }
+}
+
+@keyframes swipeArcOnce {
+  0%, 100% {
+    opacity: 0.35;
+    transform: translateX(-5px) scale(0.93);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(5px) scale(1.04);
+  }
+}
+
+.swipe-caption {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--brand-navy);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Card Faces (Pure White Physical Cardstock, Fixed Landscape Layout)
+   ========================================================================== */
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  width: var(--card-base-w);
+  height: var(--card-base-h);
+  background-color: var(--card-white);
+  border-radius: 16px;
+  padding: 24px 28px 20px;
+  box-shadow:
+    0 22px 48px -12px rgba(15, 37, 71, 0.12),
+    0 6px 18px -4px rgba(15, 37, 71, 0.06),
+    0 0 0 1px rgba(15, 37, 71, 0.08);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.card-face--front {
+  z-index: 2;
+  transform: rotateY(0deg) translateZ(1px);
+}
+
+.card-face--back {
+  transform: rotateY(180deg) translateZ(1px);
+}
+
+/* Top Minimalist Dual-Tone Accent Line (Navy + Orange from Logo) */
+.card-accent-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--brand-navy) 0%, var(--brand-navy) 72%, var(--brand-orange) 72%, var(--brand-orange) 100%);
+}
+
+/* ==========================================================================
+   FRONT SIDE LAYOUT — CIRCLE PROFILE PHOTO + LOGO & DETAILS
+   ========================================================================== */
+
+.front-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.firm-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.firm-name {
+  font-family: var(--font-heading);
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: var(--brand-navy);
+  letter-spacing: 0.01em;
+  line-height: 1.22;
+}
+
+.firm-chartered {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--brand-orange);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.firm-pillars {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}
+
+.logo-wrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.company-logo {
+  width: 74px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.company-logo--small {
+  width: 56px;
+}
+
+/* Middle Row: Circle Profile Photo + Person Name & Credentials */
+.front-identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 10px 0 8px;
+}
+
+.profile-frame {
+  flex-shrink: 0;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  padding: 2.5px;
+  background: linear-gradient(135deg, var(--brand-navy) 0%, var(--brand-orange) 100%);
+  box-shadow: 0 8px 20px -4px rgba(15, 37, 71, 0.18);
+}
+
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 18%;
+  border: 2px solid #ffffff;
+  display: block;
+  background-color: #f1f5f9;
+}
+
+.identity-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.person-name {
+  font-family: var(--font-heading);
+  font-size: 1.54rem;
+  font-weight: 800;
+  color: var(--brand-navy);
+  letter-spacing: -0.02em;
+  line-height: 1.14;
+}
+
+.person-fca {
+  font-weight: 700;
+  font-size: 0.84em;
+  color: var(--brand-orange);
+}
+
+.person-credentials {
+  margin-top: 2px;
+  font-size: 0.79rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.firm-scope {
+  margin-top: 3px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.card-divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--border-subtle);
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.card-divider::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 44px;
+  height: 2px;
+  background-color: var(--brand-orange);
+}
+
+/* Contact Rows */
+.front-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.contact-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.3;
+  transition: color 0.18s ease;
+}
+
+.contact-row:hover {
+  color: var(--brand-orange);
+}
+
+.contact-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 23px;
+  height: 23px;
+  border-radius: 6px;
+  background-color: #f1f5f9;
+  color: var(--brand-navy);
+  flex-shrink: 0;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.contact-row:hover .contact-icon {
+  background-color: rgba(234, 91, 43, 0.12);
+  color: var(--brand-orange);
+}
+
+.contact-label {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.contact-value {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* ==========================================================================
+   BACK SIDE LAYOUT (9 PROFESSIONAL SERVICES IN 2 LANDSCAPE COLUMNS)
+   ========================================================================== */
+
+.back-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.back-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--brand-orange);
+}
+
+.back-heading {
+  font-family: var(--font-heading);
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: var(--brand-navy);
+  margin-top: 2px;
+}
+
+.back-sub {
+  font-size: 0.73rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.services-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px 14px;
+  margin: 10px 0;
+}
+
+.services-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+.services-list li.service-span-full {
+  grid-column: 1 / -1;
+}
+
+.bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 1.5px;
+  background-color: var(--brand-orange);
+  flex-shrink: 0;
+}
+
+.back-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--brand-navy);
+}

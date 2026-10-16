@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rohana Hettiarachchi — Printable QR Card</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background-color: #0b0c0e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Standard Business Card Aspect Ratio (1.65 : 1) matching Reference Image */
+    .topo-qr-card {
+      position: relative;
+      width: min(100%, 580px);
+      aspect-ratio: 1.65 / 1;
+      background-color: #141518;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1.5px solid #7d6a40;
+      border-top: 7px solid #8c7747;
+      box-shadow:
+        0 30px 65px -12px rgba(0, 0, 0, 0.85),
+        0 0 0 1px rgba(197, 165, 90, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Full-Bleed Gold Topographic Contour Map Background */
+    .topo-bg-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Center Dark Stage Island (Clears the contour lines in the middle like reference image) */
+    .center-island {
+      position: relative;
+      z-index: 2;
+      background: #141518;
+      box-shadow: 0 0 38px 26px #141518;
+      border-radius: 18px;
+      padding: 18px 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 38px;
+    }
+
+    /* Profile Picture in Gold Ring */
+    .profile-gold-wrap {
+      width: 132px;
+      height: 132px;
+      border-radius: 50%;
+      padding: 3.5px;
+      background: linear-gradient(135deg, #d4b46a 0%, #8c7542 50%, #c5a358 100%);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65);
+      flex-shrink: 0;
+    }
+
+    .profile-gold-wrap img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 18%;
+      border: 2.5px solid #141518;
+      display: block;
+    }
+
+    /* Subtle Vertical Gold Divider */
+    .center-divider {
+      width: 1.5px;
+      height: 96px;
+      background: linear-gradient(180deg, transparent, #8c7747, transparent);
+      flex-shrink: 0;
+    }
+
+    /* Scannable QR Code Frame */
+    .qr-gold-frame {
+      width: 132px;
+      height: 132px;
+      border-radius: 14px;
+      padding: 9px;
+      background: #ffffff;
+      border: 3px solid #9e8650;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .qr-gold-frame img,
+    .qr-gold-frame svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Print Action Bar (Hidden when printing) */
+    .actions-bar {
+      display: flex;
+      gap: 12px;
+    }
+
+    .action-btn {
+      background: linear-gradient(135deg, #c5a358, #8c7542);
+      color: #141518;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 500px) {
+      .center-island {
+        gap: 20px;
+        padding: 12px 20px;
+      }
+      .profile-gold-wrap,
+      .qr-gold-frame {
+        width: 96px;
+        height: 96px;
+      }
+      .center-divider {
+        height: 68px;
+      }
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .actions-bar {
+        display: none !important;
+      }
+      .topo-qr-card {
+        width: 3.5in;
+        height: 2in;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Black & Gold Topographic Master QR Card -->
+  <div class="topo-qr-card" id="topoQrCard">
+    <!-- Topographic Gold Contour Lines SVG matching Reference Image -->
+    <svg class="topo-bg-svg" viewBox="0 0 800 485" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <g stroke="#7C6940" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" opacity="0.88">
+        <!-- Left & Bottom-Left Nested Topographic Loops -->
+        <path d="M-20 260 C 45 240, 85 180, 95 110 C 105 40, 70 -10, 40 -20" />
+        <path d="M-20 295 C 65 270, 115 200, 125 115 C 135 40, 105 -5, 85 -20" />
+        <path d="M-20 335 C 50 320, 95 360, 110 420 C 120 460, 115 490, 105 505" />
+        <path d="M-20 365 C 35 355, 72 385, 82 435 C 90 470, 82 495, 70 505" />
+        <path d="M-20 398 C 20 392, 48 415, 54 452 C 58 478, 50 498, 40 505" />
+        <path d="M-15 432 C 8 430, 24 448, 26 472 C 28 490, 20 502, 10 505" />
+
+        <!-- Top-Left & Center-Top Flowing Contours -->
+        <path d="M145 -20 C 155 45, 195 115, 250 135 C 305 155, 345 95, 335 30 C 328 -5, 310 -15, 300 -20" />
+        <path d="M175 -20 C 185 35, 215 92, 258 106 C 295 118, 318 75, 310 20 C 305 -5, 292 -15, 282 -20" />
+        <path d="M208 -20 C 216 22, 238 64, 266 72 C 288 78, 298 48, 290 10 C 286 -8, 276 -16, 268 -20" />
+        <path d="M238 -20 C 244 8, 256 32, 270 35 C 280 37, 282 15, 276 -8" />
+
+        <!-- Outer Sweeping Contours Connecting Top to Bottom -->
+        <path d="M115 -20 C 130 75, 160 155, 145 235 C 130 315, 165 385, 195 505" />
+        <path d="M130 -20 C 148 80, 188 158, 178 242 C 168 325, 205 395, 235 505" />
+        <path d="M365 -20 C 385 65, 355 145, 395 215 C 435 285, 375 375, 415 505" />
+
+        <!-- Top-Center Islands -->
+        <ellipse cx="385" cy="92" rx="18" ry="26" transform="rotate(-18 385 92)" />
+        <ellipse cx="485" cy="112" rx="22" ry="30" transform="rotate(24 485 112)" />
+
+        <!-- Right & Top-Right Complex Topographic Ridges -->
+        <path d="M510 -20 C 495 45, 535 95, 585 75 C 635 55, 655 -5, 645 -20" />
+        <path d="M540 -20 C 530 25, 555 62, 588 48 C 618 35, 628 -5, 622 -20" />
+        <path d="M685 -20 C 660 55, 590 125, 610 195 C 630 265, 735 245, 820 210" />
+        <path d="M720 -20 C 695 48, 632 115, 648 178 C 664 238, 748 220, 820 185" />
+        <path d="M758 -20 C 735 38, 680 98, 692 152 C 704 202, 768 188, 820 158" />
+        <path d="M792 -20 C 772 28, 728 78, 738 122 C 748 162, 788 152, 820 130" />
+
+        <!-- Bottom-Right & Center-Bottom Contours -->
+        <path d="M820 265 C 735 290, 645 275, 615 335 C 585 395, 665 445, 720 505" />
+        <path d="M820 302 C 748 322, 672 310, 652 355 C 632 400, 695 445, 755 505" />
+        <path d="M820 342 C 765 356, 705 348, 692 382 C 678 415, 730 452, 785 505" />
+        <path d="M275 505 C 295 425, 355 375, 435 395 C 515 415, 545 465, 560 505" />
+        <path d="M315 505 C 332 445, 378 408, 438 422 C 495 435, 518 475, 530 505" />
+        <ellipse cx="468" cy="458" rx="16" ry="12" />
+      </g>
+    </svg>
+
+    <!-- Center Island: Profile Picture + QR Code Only -->
+    <div class="center-island">
+      <div class="profile-gold-wrap">
+        <img src="Profile.jpg" alt="Rohana Hettiarachchi" />
+      </div>
+
+      <div class="center-divider" aria-hidden="true"></div>
+
+      <div class="qr-gold-frame">
+        <img src="qr-code.svg" alt="Scan QR Code for Rohana Hettiarachchi Digital Business Card" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Print / View Digital Card Buttons (Hidden on Print) -->
+  <div class="actions-bar">
+    <button type="button" class="action-btn" onclick="window.print()">Print QR Card</button>
+    <a href="index.html" class="action-btn" style="background: rgba(255,255,255,0.1); color: #e2e8f0; border: 1px solid rgba(197,163,88,0.4);">Open Digital Card</a>
+  </div>
+
+</body>
+</html>
