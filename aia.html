@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=no" />
+  <meta name="theme-color" content="#FFFFFF" />
+  <title>Rohana Hettiarachchi — Wealth Planner's Manager | AIA Insurance Lanka</title>
+  <meta name="description" content="Rohana Hettiarachchi — Wealth Planner's Manager at AIA Insurance Lanka Limited. Financial & Protection Solutions: Protect Your Family, Build Your Wealth, Secure Your Future." />
+
+  <link rel="preload" as="image" href="Profile.jpg" fetchpriority="high" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --aia-red: #D31145;
+      --aia-red-dark: #9E0B32;
+      --aia-red-soft: rgba(211, 17, 69, 0.08);
+      --text-dark: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #64748B;
+      --border-subtle: #E2E8F0;
+      --card-w: 560px;
+      --card-h: 340px;
+      --card-radius: 16px;
+      --card-scale: 1;
+      --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #FFFFFF;
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .stage {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #FFFFFF;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .card-viewport-box {
+      position: relative;
+      width: var(--card-w);
+      height: var(--card-h);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(var(--card-scale));
+      transform-origin: center center;
+      will-change: transform;
+    }
+
+    html[data- Force-landscape="true"] .card-viewport-box,
+    html[data-force-landscape="true"] .card-viewport-box {
+      transform: rotate(90deg) scale(var(--card-scale));
+    }
+
+    .card-scene {
+      position: relative;
+      width: var(--card-w);
+      height: var(--card-h);
+      perspective: 1800px;
+    }
+
+    /* One-Time Swipe Overlay on the Card */
+    .card-swipe-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      border-radius: var(--card-radius);
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+
+    .card-swipe-overlay.is-dismissed {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .swipe-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 20px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.93);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(211, 17, 69, 0.22);
+      box-shadow: 0 14px 32px -6px rgba(211, 17, 69, 0.18);
+      animation: swipeBadgeLifecycle 2.4s cubic-bezier(0.22, 1, 0.36, 1) 1 forwards;
+    }
+
+    .swipe-hand-svg {
+      overflow: visible;
+      animation: handSwipeOnce 1.15s ease-in-out 2;
+      transform-origin: 50% 80%;
+    }
+
+    .swipe-caption {
+      font-family: var(--font-heading);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--aia-red);
+    }
+
+    @keyframes handSwipeOnce {
+      0%, 100% { transform: translateX(-8px) rotate(-6deg); }
+      50% { transform: translateX(10px) rotate(8deg); }
+    }
+
+    @keyframes swipeBadgeLifecycle {
+      0% { opacity: 0; transform: scale(0.92); }
+      14% { opacity: 1; transform: scale(1); }
+      82% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.95); }
+    }
+
+    /* 3D Business Card Container */
+    .business-card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      cursor: grab;
+      touch-action: none;
+      outline: none;
+      will-change: transform;
+    }
+
+    .business-card:active {
+      cursor: grabbing;
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: var(--card-radius);
+      background-color: #FFFFFF;
+      border: 1px solid rgba(211, 17, 69, 0.18);
+      box-shadow:
+        0 22px 50px -12px rgba(15, 23, 42, 0.14),
+        0 4px 16px -2px rgba(211, 17, 69, 0.07);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px 26px 16px;
+    }
+
+    .card-face--front {
+      transform: rotateY(0deg) translateZ(1px);
+    }
+
+    .card-face--back {
+      transform: rotateY(180deg) translateZ(1px);
+      padding: 16px 24px 13px;
+    }
+
+    /* Top AIA Crimson Accent Bar */
+    .card-accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #D31145 0%, #D31145 76%, #9E0B32 76%, #9E0B32 100%);
+    }
+
+    /* Subtle Watermark Crest on White Card */
+    .card-face::after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      bottom: -30px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(211, 17, 69, 0.035) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ================= FRONT SIDE ================= */
+    .front-top {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .firm-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5px;
+    }
+
+    .firm-name {
+      font-family: var(--font-heading);
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--aia-red);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .firm-reg {
+      font-size: 0.64rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.01em;
+    }
+
+    .firm-chartered {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .firm-pillars {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .aia-logo-svg {
+      width: 52px;
+      height: auto;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .aia-logo-svg--small {
+      width: 40px;
+    }
+
+    /* Middle Identity Section */
+    .front-identity {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 6px 0 4px;
+    }
+
+    .profile-frame {
+      flex-shrink: 0;
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      padding: 2.5px;
+      background: linear-gradient(135deg, #D31145 0%, #8F0A2C 100%);
+      box-shadow: 0 8px 20px -4px rgba(211, 17, 69, 0.25);
+    }
+
+    .profile-photo {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 18%;
+      border: 2px solid #FFFFFF;
+      display: block;
+      background-color: #F8FAFC;
+    }
+
+    .identity-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .person-name {
+      font-family: var(--font-heading);
+      font-size: 1.48rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+    }
+
+    .person-role {
+      margin-top: 2px;
+      font-family: var(--font-heading);
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--aia-red);
+      letter-spacing: 0.01em;
+    }
+
+    .person-credentials {
+      margin-top: 1.5px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .card-divider {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 1px;
+      background-color: var(--border-subtle);
+      margin: 4px 0 6px;
+    }
+
+    .card-divider::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 48px;
+      height: 2px;
+      background-color: var(--aia-red);
+    }
+
+    /* Bottom Contact Details Grid */
+    .front-contacts {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 12px;
+    }
+
+    .contact-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.74rem;
+      line-height: 1.25;
+      transition: color 0.18s ease;
+      min-width: 0;
+    }
+
+    .contact-row--full {
+      grid-column: 1 / -1;
+    }
+
+    .contact-row:hover {
+      color: var(--aia-red);
+    }
+
+    .contact-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      background-color: var(--aia-red-soft);
+      color: var(--aia-red);
+      flex-shrink: 0;
+    }
+
+    .contact-label {
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      flex-shrink: 0;
+    }
+
+    .contact-value {
+      font-weight: 600;
+      color: var(--text-dark);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .contact-value--brand {
+      font-weight: 800;
+      color: var(--aia-red);
+      letter-spacing: 0.03em;
+    }
+
+    /* ================= BACK SIDE ================= */
+    .back-top {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 7px;
+      border-bottom: 1.5px solid rgba(211, 17, 69, 0.22);
+    }
+
+    .back-eyebrow {
+      font-family: var(--font-heading);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--aia-red);
+    }
+
+    .back-sub {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+
+    /* 6 Flagship AIA Plans in a 3x2 Executive Grid */
+    .plans-grid {
+      position: relative;
+      z-index: 1;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 7px 12px;
+      margin: 6px 0;
+    }
+
+    .plan-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 5px 8px;
+      border-radius: 8px;
+      background: #FFFDFD;
+      border: 1px solid rgba(211, 17, 69, 0.12);
+    }
+
+    .plan-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--aia-red-soft);
+      color: var(--aia-red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .plan-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .plan-title {
+      font-family: var(--font-heading);
+      font-size: 0.73rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.2;
+    }
+
+    .plan-desc {
+      font-size: 0.63rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      line-height: 1.22;
+      margin-top: 1px;
+    }
+
+    /* Additional Protection Pillars Row */
+    .pillars-strip {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .pillar-pill {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--aia-red);
+      background: var(--aia-red-soft);
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+
+    .back-footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 6px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .back-footer-domain {
+      color: var(--aia-red);
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="stage" id="stage">
+    <div class="card-viewport-box" id="cardViewportBox">
+      <div class="card-scene" id="cardScene">
+
+        <!-- One-Time Animated Swipe Overlay ON the Card -->
+        <div class="card-swipe-overlay" id="swipeHint" aria-hidden="true">
+          <div class="swipe-badge">
+            <svg class="swipe-hand-svg" viewBox="0 0 120 120" width="52" height="52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M42 23 C58 12, 82 16, 98 37 C80 25, 60 25, 45 31 C40 33, 37 27, 42 23 Z"
+                fill="#D31145"
+              />
+              <g transform="rotate(-24 56 68)">
+                <path
+                  d="M36 69 V30 C36 24 44.5 24 44.5 30 V53
+                     M44.5 45 C44.5 39.5 53 39.5 53 45 V54
+                     M53 47 C53 41.5 61.5 41.5 61.5 47 V56
+                     M61.5 50.5 C61.5 45.5 69.5 45.5 69.5 51 V70
+                     C69.5 84.5 58.5 94 45.5 94
+                     C35 94 28.5 87.5 23 78.5
+                     L16.5 67.5 C14 63 20 58 24.5 61.5
+                     L36 71"
+                  fill="#FFFFFF"
+                  stroke="#D31145"
+                  stroke-width="4.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+            <span class="swipe-caption">Swipe card to flip</span>
+          </div>
+        </div>
+
+        <div class="business-card" id="businessCard" tabindex="0" role="region" aria-label="AIA Insurance Business Card of Rohana Hettiarachchi. Swipe or tap to flip.">
+
+          <!-- ================= FRONT SIDE ================= -->
+          <div class="card-face card-face--front">
+            <div class="card-accent-bar" aria-hidden="true"></div>
+
+            <!-- Top Row: Company Info & Official AIA Logo -->
+            <div class="front-top">
+              <div class="firm-info">
+                <h2 class="firm-name">
+                  <span>AIA INSURANCE LANKA LIMITED</span>
+                  <span class="firm-reg">(Co. No. PQ 18 PB)</span>
+                </h2>
+                <p class="firm-chartered">FINANCIAL &amp; PROTECTION SOLUTIONS</p>
+                <p class="firm-pillars">Protect Your Family • Build Your Wealth • Secure Your Future</p>
+              </div>
+              <svg class="aia-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.122443 21.542728" role="img" aria-label="AIA Insurance Logo">
+                
+<g transform="translate(-42.820322,-175.59501) matrix(0.35277777,0,0,-0.35277777,-83.58789,461.34486)">
+ <g transform="translate(386.8415,806.8356)">
+  <path d="m 0,0 c 14.137,0 25.725,-10.723 26.842,-24.356 -0.436,-0.576 -1.054,-0.882 -1.739,-1.034 -2.398,-0.507 -3.135,1.576 -5.13,2.895 -2,1.32 -3.836,1.825 -5.688,3.669 -0.744,0.744 -0.934,2.013 -1.674,2.791 -0.986,1.05 -1.586,1.336 -2.924,1.861 -2.348,0.912 -4.364,1.589 -6.316,3.198 -0.33,0.269 -1.106,0.626 -1.83,0.761 -0.31,0.067 -0.447,0.017 -0.552,-0.101 -0.291,-0.374 -0.557,-0.828 -0.816,-1.253 -0.071,-0.117 -0.311,-0.457 -0.507,-0.642 -0.376,-0.34 -0.848,-0.778 -1.209,-0.98 -1.963,-1.202 -4.55,-2.218 -5.667,-4.231 -0.208,-0.37 -2.349,-1.37 -2.843,-1.757 -0.779,-0.642 -1.542,-1.269 -2.342,-1.861 -0.749,-0.559 -1.784,-1.421 -2.565,-1.997 -0.412,0.152 -0.835,0.286 -1.224,0.354 -0.92,0.188 -1.693,0.898 -2.484,1.37 -1.013,0.643 -0.937,0.71 -1.257,0.899 -0.28,0.151 -0.418,0.252 -0.526,0.302 -0.754,0.442 -0.799,0 -1.869,-0.659 -0.892,-0.542 -1.92,-1.454 -2.687,-2.181 -0.611,-0.576 -1.233,-1.185 -1.872,-1.811 C -25.963,-10.925 -14.283,0 0,0 m -21.797,-42.119 c -2.073,2.807 -3.601,6.022 -4.435,9.523 0.241,-0.051 0.532,-0.135 1.011,-0.286 1.585,-0.509 4.574,-1.488 6.726,-0.509 1.368,0.644 3.75,1.169 4.665,1.522 0.865,0.357 2.692,-0.437 0.535,0.983 h -0.011 c -0.028,0.016 -0.061,0.034 -0.11,0.051 -0.072,0.033 -0.142,0.05 -0.222,0.067 -0.211,0.05 -1.941,-0.286 -2.324,-0.236 -0.12,0.033 -0.234,0.068 -0.349,0.134 -0.938,0.509 3.066,3.636 3.198,4.417 -1.149,-0.121 -2.098,-0.848 -3.126,-1.303 -1.208,-0.525 -2.535,-0.542 -3.829,-0.558 -1.482,0 -2.633,-1.152 -3.935,-1.677 -0.681,-0.287 -1.798,-0.541 -2.552,-1.03 -0.055,0.32 -0.104,0.643 -0.146,0.963 0.024,0.559 0.084,1.236 0.222,2.013 0.297,1.693 0.983,3.012 2.512,5.042 0,0 1.49,1.791 2.358,2.367 0.338,0.238 0.703,0.557 1.062,0.339 0.38,-0.238 -0.104,-1.709 0.912,-1.962 0.614,-0.135 0.073,-1.151 0.284,-1.743 0.225,-0.627 -2.529,-3.044 -1.802,-3.333 0.404,-0.168 2.229,0.761 3.197,1.067 0.854,0.269 1.763,0.286 2.699,1.168 0.964,0.896 1.919,1.404 1.919,1.404 0.783,0.659 1.544,1.336 2.318,1.996 0.754,0.66 1.476,1.336 2.206,2.013 0.458,0.437 2.526,1.589 2.709,1.979 0.963,2.08 3.476,3.299 5.344,4.618 0.343,0.236 0.715,0.744 0.926,1.03 0.212,0.289 0.435,0.727 0.558,0.865 0.237,0.27 0.297,0.472 0.563,0.606 0.106,0.054 0.528,0.054 0.71,-0.152 0.609,-0.643 1.438,-1.201 1.468,-1.877 0.051,-1.048 2.985,-1.963 3.653,-2.775 0.276,-0.336 0.437,-0.659 0.551,-0.979 -0.512,0.203 -1.016,0.455 -1.463,0.777 -0.296,0.22 -0.987,0.169 -1.341,0.22 -1.013,0.188 -0.778,-0.287 -0.218,-0.862 0.574,-0.609 1.241,-1.117 1.765,-1.778 0.606,-0.744 0.55,-1.353 0.713,-2.248 0.179,-0.949 0.747,-1.778 1.212,-2.622 0.473,-0.845 0.44,-1.744 0.702,-2.656 0.283,-0.912 1.059,-1.676 1.703,-2.353 0.549,-0.572 1.798,-1.979 2.481,-1.673 0.725,0.303 1.626,-0.575 1.897,-0.323 0.275,0.239 -0.726,1.407 -0.343,1.76 0.385,0.358 2.052,-0.202 2.394,-1.268 0.389,-1.253 0.349,-1.354 0.287,-2.249 -0.042,-0.592 -0.274,-1.067 -0.672,-1.488 -0.495,-0.491 -1.641,-1.319 -1.415,-2.15 1.051,0.558 2.195,0.608 3.369,0.575 1.137,-0.034 1.976,0.441 2.738,1.252 0.337,0.357 1.305,1.488 1.855,0.912 0.334,-0.336 -0.643,-1.723 0.429,-1.437 0.714,0.188 1.351,0.744 1.998,1.101 0.173,0.101 0.332,0.202 0.47,0.303 -0.845,-3.552 -2.408,-6.833 -4.533,-9.675 l 0.781,-0.642 c 3.776,4.837 6.044,10.926 6.044,17.54 0,15.751 -12.774,28.52 -28.521,28.52 -15.751,0 -28.519,-12.769 -28.519,-28.52 0,-6.563 2.219,-12.585 5.941,-17.406 z m 11.587,-0.033 c -0.044,-0.303 -0.468,-2.926 -0.931,-5.82 -0.848,0.188 -1.694,0.508 -2.64,1.033 -0.944,0.525 -1.659,1.063 -2.26,1.69 2.211,1.929 4.207,3.672 4.454,3.875 0.596,0.507 0.888,0.625 1.165,0.474 0.273,-0.152 0.33,-0.474 0.212,-1.252 m 1.644,4.244 c 0,0 -0.069,0.051 -0.149,0.088 -0.076,0.033 -0.133,0.067 -0.14,0.084 0.004,-0.017 0.007,-0.017 0.007,-0.017 -1.341,0.744 -2.667,0.71 -4.191,-0.407 -2.105,-1.522 -12.24,-10.098 -12.24,-10.098 l 2.925,-2.488 c 0,0 1.625,1.42 3.616,3.147 0.978,-0.861 2.075,-1.643 3.311,-2.335 1.226,-0.677 2.479,-1.199 3.721,-1.555 -0.422,-2.623 -0.765,-4.754 -0.765,-4.754 l 3.65,-1.168 c 0,0 1.935,13.144 2.118,15.733 0.14,1.878 -0.533,3.027 -1.863,3.77 m 6.553,-19.994 H 1.76 v 18.725 h -3.773 z m 15.394,10.946 c -0.949,-0.525 -1.794,-0.828 -2.635,-1.016 -0.457,2.894 -0.866,5.517 -0.922,5.82 -0.112,0.778 -0.057,1.084 0.22,1.252 0.27,0.151 0.567,0.033 1.155,-0.474 0.254,-0.22 2.248,-1.963 4.448,-3.892 -0.603,-0.61 -1.317,-1.165 -2.266,-1.69 m -4.902,9.22 c -0.006,-0.017 -0.067,-0.051 -0.148,-0.084 -0.077,-0.037 -0.133,-0.071 -0.133,-0.071 -1.334,-0.744 -2.018,-1.892 -1.884,-3.77 0.188,-2.606 2.098,-15.75 2.098,-15.75 l 3.655,1.168 c 0,0 -0.338,2.131 -0.754,4.736 1.244,0.374 2.494,0.896 3.731,1.573 1.225,0.676 2.329,1.474 3.298,2.335 1.991,-1.743 3.621,-3.181 3.621,-3.181 l 2.925,2.487 c 0,0 -10.12,8.611 -12.221,10.133 -1.518,1.117 -2.849,1.151 -4.188,0.424 m 0.787,5.362 c -0.66,1.286 -2.982,0.286 -4.159,1.37 -0.324,0.286 -1.013,0.912 -1.364,1.98 -0.334,1.012 -0.841,1.824 -1.692,2.483 -1.511,1.185 -5.091,2.979 -4.844,5.4 0.112,1.08 1.415,1.302 1.947,2.096 0.324,0.455 0.369,1.081 0.751,1.505 0.429,0.492 -0.173,0.492 -0.594,0.525 -0.901,0.034 -1.573,-0.949 -2.321,-1.353 -1.226,-0.643 -2.328,-1.558 -3.709,-1.861 -0.406,-0.085 -2.47,-0.728 -1.123,-1.068 0.921,-0.235 1.954,-0.168 2.717,-0.828 0.982,-0.844 1.78,-1.928 2.765,-2.773 0.5,-0.425 0.986,-0.828 1.392,-1.353 0.469,-0.61 0.408,-1.303 0.755,-1.929 0.336,-0.609 0.996,-0.067 1.408,-0.407 1.347,-1.114 -0.527,-1.656 -1.011,-2.181 -0.632,-0.694 -0.754,-1.135 -1.913,-1.606 -0.512,-0.205 -3.833,-0.609 -4.238,-0.916 -0.41,-0.303 -0.194,-0.404 -0.089,-0.522 0.108,-0.121 0.677,-0.306 0.931,-0.322 1.395,-0.135 5.688,-0.947 6.568,0.151 0.601,0.761 1.492,0.848 2.482,0.575 0.695,-0.185 2.074,-0.05 3.271,0.441 0.692,0.287 2.607,0.304 2.07,0.593" style="fill:#D31145;fill-rule:nonzero;stroke:none" />
+ </g>
+</g>
+
+              </svg>
+            </div>
+
+            <!-- Middle Row: Circle Profile Photo + Name, Title & Credentials -->
+            <div class="front-identity">
+              <div class="profile-frame">
+                <img
+                  src="Profile.jpg"
+                  alt="Rohana Hettiarachchi"
+                  class="profile-photo"
+                  draggable="false"
+                />
+              </div>
+              <div class="identity-text">
+                <h1 class="person-name">Rohana Hettiarachchi</h1>
+                <p class="person-role">Wealth Planner's Manager</p>
+                <p class="person-credentials">ACA, B.B.Mgt. (Acc) Sp. Hons</p>
+              </div>
+            </div>
+
+            <div class="card-divider" aria-hidden="true"></div>
+
+            <!-- Bottom Row: Complete Office & Direct Contact Details -->
+            <div class="front-contacts">
+              <a href="https://wa.me/94766800130" target="_blank" rel="noopener noreferrer" class="contact-row">
+                <span class="contact-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                </span>
+                <span class="contact-label">Mobile:</span>
+                <span class="contact-value">+94 76 680 0130</span>
+              </a>
+
+              <a href="tel:+94112310200" class="contact-row">
+                <span class="contact-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                    <path d="M9 22v-4h6v4"></path>
+                    <path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"></path>
+                  </svg>
+                </span>
+                <span class="contact-label">Tel:</span>
+                <span class="contact-value">+94 11 231 0200</span>
+              </a>
+
+              <a href="mailto:Lasantha.rohana@aialanka.com.lk" class="contact-row">
+                <span class="contact-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                  </svg>
+                </span>
+                <span class="contact-value">Lasantha.rohana@aialanka.com.lk</span>
+              </a>
+
+              <a href="https://www.aialife.com.lk" target="_blank" rel="noopener noreferrer" class="contact-row">
+                <span class="contact-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                  </svg>
+                </span>
+                <span class="contact-value contact-value--brand">AIALIFE.COM.LK</span>
+              </a>
+
+              <a href="https://maps.google.com/?q=AIA+Tower,+92,+Dharmapala+Mawatha,+Colombo+07" target="_blank" rel="noopener noreferrer" class="contact-row contact-row--full">
+                <span class="contact-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </span>
+                <span class="contact-value">AIA Tower, 92, Dharmapala Mawatha, Colombo 07</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- ================= BACK SIDE ================= -->
+          <div class="card-face card-face--back">
+            <div class="card-accent-bar" aria-hidden="true"></div>
+
+            <div class="back-top">
+              <div>
+                <p class="back-eyebrow">FINANCIAL &amp; PROTECTION SOLUTIONS</p>
+                <p class="back-sub">AIA Insurance Lanka Limited (Co. No. PQ 18 PB)</p>
+              </div>
+              <svg class="aia-logo-svg aia-logo-svg--small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.122443 21.542728" role="img" aria-label="AIA Insurance Logo">
+                
+<g transform="translate(-42.820322,-175.59501) matrix(0.35277777,0,0,-0.35277777,-83.58789,461.34486)">
+ <g transform="translate(386.8415,806.8356)">
+  <path d="m 0,0 c 14.137,0 25.725,-10.723 26.842,-24.356 -0.436,-0.576 -1.054,-0.882 -1.739,-1.034 -2.398,-0.507 -3.135,1.576 -5.13,2.895 -2,1.32 -3.836,1.825 -5.688,3.669 -0.744,0.744 -0.934,2.013 -1.674,2.791 -0.986,1.05 -1.586,1.336 -2.924,1.861 -2.348,0.912 -4.364,1.589 -6.316,3.198 -0.33,0.269 -1.106,0.626 -1.83,0.761 -0.31,0.067 -0.447,0.017 -0.552,-0.101 -0.291,-0.374 -0.557,-0.828 -0.816,-1.253 -0.071,-0.117 -0.311,-0.457 -0.507,-0.642 -0.376,-0.34 -0.848,-0.778 -1.209,-0.98 -1.963,-1.202 -4.55,-2.218 -5.667,-4.231 -0.208,-0.37 -2.349,-1.37 -2.843,-1.757 -0.779,-0.642 -1.542,-1.269 -2.342,-1.861 -0.749,-0.559 -1.784,-1.421 -2.565,-1.997 -0.412,0.152 -0.835,0.286 -1.224,0.354 -0.92,0.188 -1.693,0.898 -2.484,1.37 -1.013,0.643 -0.937,0.71 -1.257,0.899 -0.28,0.151 -0.418,0.252 -0.526,0.302 -0.754,0.442 -0.799,0 -1.869,-0.659 -0.892,-0.542 -1.92,-1.454 -2.687,-2.181 -0.611,-0.576 -1.233,-1.185 -1.872,-1.811 C -25.963,-10.925 -14.283,0 0,0 m -21.797,-42.119 c -2.073,2.807 -3.601,6.022 -4.435,9.523 0.241,-0.051 0.532,-0.135 1.011,-0.286 1.585,-0.509 4.574,-1.488 6.726,-0.509 1.368,0.644 3.75,1.169 4.665,1.522 0.865,0.357 2.692,-0.437 0.535,0.983 h -0.011 c -0.028,0.016 -0.061,0.034 -0.11,0.051 -0.072,0.033 -0.142,0.05 -0.222,0.067 -0.211,0.05 -1.941,-0.286 -2.324,-0.236 -0.12,0.033 -0.234,0.068 -0.349,0.134 -0.938,0.509 3.066,3.636 3.198,4.417 -1.149,-0.121 -2.098,-0.848 -3.126,-1.303 -1.208,-0.525 -2.535,-0.542 -3.829,-0.558 -1.482,0 -2.633,-1.152 -3.935,-1.677 -0.681,-0.287 -1.798,-0.541 -2.552,-1.03 -0.055,0.32 -0.104,0.643 -0.146,0.963 0.024,0.559 0.084,1.236 0.222,2.013 0.297,1.693 0.983,3.012 2.512,5.042 0,0 1.49,1.791 2.358,2.367 0.338,0.238 0.703,0.557 1.062,0.339 0.38,-0.238 -0.104,-1.709 0.912,-1.962 0.614,-0.135 0.073,-1.151 0.284,-1.743 0.225,-0.627 -2.529,-3.044 -1.802,-3.333 0.404,-0.168 2.229,0.761 3.197,1.067 0.854,0.269 1.763,0.286 2.699,1.168 0.964,0.896 1.919,1.404 1.919,1.404 0.783,0.659 1.544,1.336 2.318,1.996 0.754,0.66 1.476,1.336 2.206,2.013 0.458,0.437 2.526,1.589 2.709,1.979 0.963,2.08 3.476,3.299 5.344,4.618 0.343,0.236 0.715,0.744 0.926,1.03 0.212,0.289 0.435,0.727 0.558,0.865 0.237,0.27 0.297,0.472 0.563,0.606 0.106,0.054 0.528,0.054 0.71,-0.152 0.609,-0.643 1.438,-1.201 1.468,-1.877 0.051,-1.048 2.985,-1.963 3.653,-2.775 0.276,-0.336 0.437,-0.659 0.551,-0.979 -0.512,0.203 -1.016,0.455 -1.463,0.777 -0.296,0.22 -0.987,0.169 -1.341,0.22 -1.013,0.188 -0.778,-0.287 -0.218,-0.862 0.574,-0.609 1.241,-1.117 1.765,-1.778 0.606,-0.744 0.55,-1.353 0.713,-2.248 0.179,-0.949 0.747,-1.778 1.212,-2.622 0.473,-0.845 0.44,-1.744 0.702,-2.656 0.283,-0.912 1.059,-1.676 1.703,-2.353 0.549,-0.572 1.798,-1.979 2.481,-1.673 0.725,0.303 1.626,-0.575 1.897,-0.323 0.275,0.239 -0.726,1.407 -0.343,1.76 0.385,0.358 2.052,-0.202 2.394,-1.268 0.389,-1.253 0.349,-1.354 0.287,-2.249 -0.042,-0.592 -0.274,-1.067 -0.672,-1.488 -0.495,-0.491 -1.641,-1.319 -1.415,-2.15 1.051,0.558 2.195,0.608 3.369,0.575 1.137,-0.034 1.976,0.441 2.738,1.252 0.337,0.357 1.305,1.488 1.855,0.912 0.334,-0.336 -0.643,-1.723 0.429,-1.437 0.714,0.188 1.351,0.744 1.998,1.101 0.173,0.101 0.332,0.202 0.47,0.303 -0.845,-3.552 -2.408,-6.833 -4.533,-9.675 l 0.781,-0.642 c 3.776,4.837 6.044,10.926 6.044,17.54 0,15.751 -12.774,28.52 -28.521,28.52 -15.751,0 -28.519,-12.769 -28.519,-28.52 0,-6.563 2.219,-12.585 5.941,-17.406 z m 11.587,-0.033 c -0.044,-0.303 -0.468,-2.926 -0.931,-5.82 -0.848,0.188 -1.694,0.508 -2.64,1.033 -0.944,0.525 -1.659,1.063 -2.26,1.69 2.211,1.929 4.207,3.672 4.454,3.875 0.596,0.507 0.888,0.625 1.165,0.474 0.273,-0.152 0.33,-0.474 0.212,-1.252 m 1.644,4.244 c 0,0 -0.069,0.051 -0.149,0.088 -0.076,0.033 -0.133,0.067 -0.14,0.084 0.004,-0.017 0.007,-0.017 0.007,-0.017 -1.341,0.744 -2.667,0.71 -4.191,-0.407 -2.105,-1.522 -12.24,-10.098 -12.24,-10.098 l 2.925,-2.488 c 0,0 1.625,1.42 3.616,3.147 0.978,-0.861 2.075,-1.643 3.311,-2.335 1.226,-0.677 2.479,-1.199 3.721,-1.555 -0.422,-2.623 -0.765,-4.754 -0.765,-4.754 l 3.65,-1.168 c 0,0 1.935,13.144 2.118,15.733 0.14,1.878 -0.533,3.027 -1.863,3.77 m 6.553,-19.994 H 1.76 v 18.725 h -3.773 z m 15.394,10.946 c -0.949,-0.525 -1.794,-0.828 -2.635,-1.016 -0.457,2.894 -0.866,5.517 -0.922,5.82 -0.112,0.778 -0.057,1.084 0.22,1.252 0.27,0.151 0.567,0.033 1.155,-0.474 0.254,-0.22 2.248,-1.963 4.448,-3.892 -0.603,-0.61 -1.317,-1.165 -2.266,-1.69 m -4.902,9.22 c -0.006,-0.017 -0.067,-0.051 -0.148,-0.084 -0.077,-0.037 -0.133,-0.071 -0.133,-0.071 -1.334,-0.744 -2.018,-1.892 -1.884,-3.77 0.188,-2.606 2.098,-15.75 2.098,-15.75 l 3.655,1.168 c 0,0 -0.338,2.131 -0.754,4.736 1.244,0.374 2.494,0.896 3.731,1.573 1.225,0.676 2.329,1.474 3.298,2.335 1.991,-1.743 3.621,-3.181 3.621,-3.181 l 2.925,2.487 c 0,0 -10.12,8.611 -12.221,10.133 -1.518,1.117 -2.849,1.151 -4.188,0.424 m 0.787,5.362 c -0.66,1.286 -2.982,0.286 -4.159,1.37 -0.324,0.286 -1.013,0.912 -1.364,1.98 -0.334,1.012 -0.841,1.824 -1.692,2.483 -1.511,1.185 -5.091,2.979 -4.844,5.4 0.112,1.08 1.415,1.302 1.947,2.096 0.324,0.455 0.369,1.081 0.751,1.505 0.429,0.492 -0.173,0.492 -0.594,0.525 -0.901,0.034 -1.573,-0.949 -2.321,-1.353 -1.226,-0.643 -2.328,-1.558 -3.709,-1.861 -0.406,-0.085 -2.47,-0.728 -1.123,-1.068 0.921,-0.235 1.954,-0.168 2.717,-0.828 0.982,-0.844 1.78,-1.928 2.765,-2.773 0.5,-0.425 0.986,-0.828 1.392,-1.353 0.469,-0.61 0.408,-1.303 0.755,-1.929 0.336,-0.609 0.996,-0.067 1.408,-0.407 1.347,-1.114 -0.527,-1.656 -1.011,-2.181 -0.632,-0.694 -0.754,-1.135 -1.913,-1.606 -0.512,-0.205 -3.833,-0.609 -4.238,-0.916 -0.41,-0.303 -0.194,-0.404 -0.089,-0.522 0.108,-0.121 0.677,-0.306 0.931,-0.322 1.395,-0.135 5.688,-0.947 6.568,0.151 0.601,0.761 1.492,0.848 2.482,0.575 0.695,-0.185 2.074,-0.05 3.271,0.441 0.692,0.287 2.607,0.304 2.07,0.593" style="fill:#D31145;fill-rule:nonzero;stroke:none" />
+ </g>
+</g>
+
+              </svg>
+            </div>
+
+            <!-- 6 Signature AIA Plans with Icons & Descriptions -->
+            <ul class="plans-grid">
+              <li class="plan-card">
+                <span class="plan-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3v18h18"></path>
+                    <path d="m19 9-5 5-4-4-3 3"></path>
+                  </svg>
+                </span>
+                <div class="plan-text">
+                  <span class="plan-title">1. AIA Smart Wealth</span>
+                  <span class="plan-desc">Wealth creation &amp; long-term financial planning</span>
+                </div>
+              </li>
+
+              <li class="plan-card">
+                <span class="plan-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z"></path>
+                    <path d="M2 9v1c0 1.1.9 2 2 2h1"></path>
+                  </svg>
+                </span>
+                <div class="plan-text">
+                  <span class="plan-title">2. AIA SaveSmart</span>
+                  <span class="plan-desc">Savings, maturity benefits &amp; life protection</span>
+                </div>
+              </li>
+
+              <li class="plan-card">
+                <span class="plan-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+                    <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+                    <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+                  </svg>
+                </span>
+                <div class="plan-text">
+                  <span class="plan-title">3. AIA Wealth Builder</span>
+                  <span class="plan-desc">Single-premium investment &amp; life protection</span>
+                </div>
+              </li>
+
+              <li class="plan-card">
+                <span class="plan-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                  </svg>
+                </span>
+                <div class="plan-text">
+                  <span class="plan-title">4. AIA Education Plan</span>
+                  <span class="plan-desc">Planning for children's education &amp; future</span>
+                </div>
+              </li>
+
+              <li class="plan-card">
+                <span class="plan-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="22" x2="21" y2="22"></line>
+                    <line x1="6" y1="18" x2="6" y2="11"></line>
+                    <line x1="10" y1="18" x2="10" y2="11"></line>
+                    <line x1="14" y1="18" x2="14" y2="11"></line>
+                    <line x1="18" y1="18" x2="18" y2="11"></line>
+                    <polygon points="12 2 20 7 4 7"></polygon>
+                  </svg>
+                </span>
+                <div class="plan-text">
+                  <span class="plan-title">5. AIA Smart Pension Plus</span>
+                  <span class="plan-desc">Retirement planning &amp; pension income</span>
+                </div>
+              </li>
+
+              <li class="plan-card">
+                <span class="plan-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                    <path d="m9 16 2 2 4-4"></path>
+                  </svg>
+                </span>
+                <div class="plan-text">
+                  <span class="plan-title">6. AIA Easy Pensions Plus</span>
+                  <span class="plan-desc">Pension planning with flexible options</span>
+                </div>
+              </li>
+            </ul>
+
+            <!-- Additional Core Protection Solutions -->
+            <div class="pillars-strip">
+              <span class="pillar-pill">Health Plans</span>
+              <span class="pillar-pill">Life Protection</span>
+              <span class="pillar-pill">Retirement Planning</span>
+              <span class="pillar-pill">Education Planning</span>
+            </div>
+
+            <div class="back-footer">
+              <span>Protect Your Family • Build Your Wealth • Secure Your Future</span>
+              <a href="https://www.aialife.com.lk" target="_blank" rel="noopener noreferrer" class="back-footer-domain">AIALIFE.COM.LK</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
