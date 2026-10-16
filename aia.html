@@ -22,10 +22,11 @@
       --text-secondary: #1F2937;
       --text-muted: #6B7280;
       --border-subtle: #E5E7EB;
-      --card-w: 580px;
-      --card-h: 350px;
+      --card-w: 600px;
+      --card-h: 364px;
       --card-radius: 16px;
       --card-scale: 1;
+      --card-rotate-z: 0deg;
       --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
@@ -68,13 +69,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transform: scale(var(--card-scale));
+      transform: rotate(var(--card-rotate-z, 0deg)) scale(var(--card-scale, 1));
       transform-origin: center center;
       will-change: transform;
-    }
-
-    html[data-force-landscape="true"] .card-viewport-box {
-      transform: rotate(90deg) scale(var(--card-scale));
     }
 
     .card-scene {
@@ -178,7 +175,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 20px 26px 16px;
+      padding: 22px 28px 18px;
     }
 
     .card-face--front {
@@ -187,7 +184,7 @@
 
     .card-face--back {
       transform: rotateY(180deg) translateZ(1px);
-      padding: 13px 24px 11px;
+      padding: 14px 20px 12px;
     }
 
     /* Top & Bottom Two-Tone AIA Crimson Accent Bars */
@@ -222,12 +219,12 @@
     .firm-info {
       display: flex;
       flex-direction: column;
-      gap: 1.5px;
+      gap: 2px;
     }
 
     .firm-name {
       font-family: var(--font-heading);
-      font-size: 0.96rem;
+      font-size: 1rem;
       font-weight: 800;
       color: var(--aia-red);
       letter-spacing: 0.02em;
@@ -238,14 +235,14 @@
     }
 
     .firm-reg {
-      font-size: 0.64rem;
+      font-size: 0.66rem;
       font-weight: 600;
       color: var(--text-muted);
       letter-spacing: 0.01em;
     }
 
     .firm-chartered {
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 800;
       color: var(--text-dark);
       letter-spacing: 0.07em;
@@ -253,14 +250,14 @@
     }
 
     .firm-pillars {
-      font-size: 0.65rem;
+      font-size: 0.67rem;
       font-weight: 600;
       color: var(--text-muted);
       letter-spacing: 0.02em;
     }
 
     .aia-logo-svg {
-      width: 50px;
+      width: 52px;
       height: auto;
       flex-shrink: 0;
       display: block;
@@ -282,8 +279,8 @@
 
     .profile-frame {
       flex-shrink: 0;
-      width: 82px;
-      height: 82px;
+      width: 86px;
+      height: 86px;
       border-radius: 50%;
       padding: 2.5px;
       background: linear-gradient(135deg, #D31145 0%, #840A27 100%);
@@ -309,7 +306,7 @@
 
     .person-name {
       font-family: var(--font-heading);
-      font-size: 1.48rem;
+      font-size: 1.54rem;
       font-weight: 800;
       color: var(--text-dark);
       letter-spacing: -0.02em;
@@ -319,15 +316,15 @@
     .person-role {
       margin-top: 2px;
       font-family: var(--font-heading);
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 800;
       color: var(--aia-red);
       letter-spacing: 0.01em;
     }
 
     .person-credentials {
-      margin-top: 1.5px;
-      font-size: 0.74rem;
+      margin-top: 2px;
+      font-size: 0.76rem;
       font-weight: 600;
       color: var(--text-secondary);
     }
@@ -357,7 +354,7 @@
       z-index: 1;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 4px 12px;
+      gap: 5px 14px;
     }
 
     .contact-row {
@@ -366,7 +363,7 @@
       gap: 7px;
       text-decoration: none;
       color: var(--text-secondary);
-      font-size: 0.74rem;
+      font-size: 0.76rem;
       line-height: 1.25;
       transition: color 0.18s ease;
       min-width: 0;
@@ -384,8 +381,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 20px;
-      height: 20px;
+      width: 21px;
+      height: 21px;
       border-radius: 5px;
       background-color: var(--aia-red-soft);
       color: var(--aia-red);
@@ -395,7 +392,7 @@
     .contact-label {
       font-weight: 600;
       color: var(--text-muted);
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       flex-shrink: 0;
     }
 
@@ -403,8 +400,6 @@
       font-weight: 600;
       color: var(--text-dark);
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .contact-value--brand {
@@ -413,7 +408,7 @@
       letter-spacing: 0.03em;
     }
 
-    /* ================= BACK SIDE (7 SIGNATURE PLANS IN REFERENCE STYLE) ================= */
+    /* ================= BACK SIDE (7 SIGNATURE PLANS — NO TRUNCATION) ================= */
     .back-top {
       position: relative;
       z-index: 1;
@@ -425,7 +420,7 @@
 
     .back-heading {
       font-family: var(--font-heading);
-      font-size: 0.98rem;
+      font-size: 1rem;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.015em;
@@ -434,28 +429,28 @@
     }
 
     .back-sub {
-      font-size: 0.66rem;
+      font-size: 0.67rem;
       font-weight: 500;
       color: #111827;
-      margin-top: 1px;
+      margin-top: 1.5px;
     }
 
-    /* 7 Flagship AIA Plans Grid (6 in 2-col + 7th Full-Width Health Protector) */
+    /* 7 Flagship AIA Plans Grid (Zero Ellipsis Cutoff!) */
     .plans-grid {
       position: relative;
       z-index: 1;
       list-style: none;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 5.5px 10px;
+      gap: 6px 8px;
       margin: 4px 0 3px;
     }
 
     .plan-card {
       display: flex;
       align-items: center;
-      gap: 8.5px;
-      padding: 4.5px 9px 4.5px 8px;
+      gap: 7.5px;
+      padding: 5px 7px 5px 7px;
       border-radius: 10px;
       background: #FFFFFF;
       border: 1px solid #DCDFE6;
@@ -466,7 +461,7 @@
 
     .plan-card--full {
       grid-column: 1 / -1;
-      padding: 5px 10px 5px 8px;
+      padding: 5.5px 10px 5.5px 7px;
     }
 
     /* Solid Deep Crimson Rounded Square Icon Box */
@@ -492,29 +487,24 @@
 
     .plan-title {
       font-family: var(--font-heading);
-      font-size: 0.71rem;
+      font-size: 0.72rem;
       font-weight: 800;
       color: #7E0B27;
       line-height: 1.18;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .plan-desc {
-      font-size: 0.575rem;
+      font-size: 0.545rem;
       font-weight: 500;
       color: #1F2937;
+      letter-spacing: -0.01em;
       line-height: 1.22;
       margin-top: 1px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .plan-card--full .plan-desc {
-      white-space: normal;
-      line-height: 1.2;
+      font-size: 0.565rem;
+      letter-spacing: 0;
     }
 
     /* Centered Uppercase Crimson Pillars with Dots */
@@ -526,7 +516,7 @@
       justify-content: center;
       gap: 7px;
       font-family: var(--font-heading);
-      font-size: 0.56rem;
+      font-size: 0.57rem;
       font-weight: 800;
       letter-spacing: 0.03em;
       text-transform: uppercase;
@@ -547,7 +537,7 @@
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      padding-top: 4.5px;
+      padding-top: 5px;
       border-top: 1px solid #E5E7EB;
     }
 
@@ -559,20 +549,20 @@
 
     .back-footer-motto {
       font-family: var(--font-heading);
-      font-size: 0.64rem;
+      font-size: 0.65rem;
       font-weight: 800;
       color: #111827;
     }
 
     .back-footer-company {
-      font-size: 0.51rem;
+      font-size: 0.52rem;
       font-weight: 500;
       color: #6B7280;
     }
 
     .back-footer-domain {
       font-family: var(--font-heading);
-      font-size: 0.66rem;
+      font-size: 0.68rem;
       color: #A60E32;
       font-weight: 800;
       letter-spacing: 0.03em;
@@ -721,7 +711,7 @@
             <div class="card-bottom-bar" aria-hidden="true"></div>
           </div>
 
-          <!-- ================= BACK SIDE (7 SIGNATURE PLANS) ================= -->
+          <!-- ================= BACK SIDE (7 SIGNATURE PLANS — COMPLETE TEXT, ZERO ELLIPSIS) ================= -->
           <div class="card-face card-face--back">
 
             <!-- Header: Large Crimson Title + Subtitle + Official AIA Logo -->
@@ -852,7 +842,7 @@
                 </span>
                 <div class="plan-text">
                   <span class="plan-title">07. AIA Health Protector</span>
-                  <span class="plan-desc">Comprehensive health cover for you and your family, with global access to the best healthcare &amp; added peace of mind</span>
+                  <span class="plan-desc">Comprehensive health cover for you &amp; your family, with global access to the best healthcare &amp; added peace of mind</span>
                 </div>
               </li>
             </ul>
