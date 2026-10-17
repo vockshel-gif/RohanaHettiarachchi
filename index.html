@@ -7,6 +7,26 @@
   <title>Rohana Hettiarachchi &amp; Company | Chartered Accountants</title>
   <meta name="description" content="Rohana Hettiarachchi & Company — Chartered Accountants. Tax, Audit, Accounting & Business Advisory for Individuals, Entrepreneurs & Businesses." />
 
+  <script>
+    /* Print sheet mode: ?print (both sides, 96 x 61 mm pages incl. 3 mm bleed), ?print=front, ?print=back, ?print=pdf (export helper) */
+    (function () {
+      var root = document.documentElement;
+      var mode = new URLSearchParams(location.search).get('print');
+      if (mode !== null) {
+        root.classList.add('print-mode');
+        if (mode === 'front' || mode === 'back') root.classList.add('print-only-' + mode);
+        if (mode === 'pdf') {
+          /* Oversized page for exact-size PDF export; the export script crops each page to 96 x 61 mm */
+          var pageStyle = document.createElement('style');
+          pageStyle.textContent = '@page { size: 110mm 75mm; margin: 0; }';
+          document.addEventListener('DOMContentLoaded', function () { document.head.appendChild(pageStyle); });
+        }
+      }
+      window.addEventListener('beforeprint', function () { root.classList.add('print-mode'); });
+      window.addEventListener('afterprint', function () { if (mode === null) root.classList.remove('print-mode'); });
+    })();
+  </script>
+
   <!-- Preload Critical Images for Instant Render -->
   <link rel="preload" as="image" href="Profile.jpg" fetchpriority="high" />
   <link rel="preload" as="image" href="Logo/516607218_122106043148930137_3336936912384981878_n.jpg" fetchpriority="high" />

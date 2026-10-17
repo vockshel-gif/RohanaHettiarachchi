@@ -516,3 +516,84 @@ body {
   letter-spacing: 0.05em;
   color: var(--brand-navy);
 }
+
+/* ==========================================================================
+   PRINT SHEET — 90 x 55 mm card (+3 mm bleed), one side per 96 x 61 mm page
+   (Ctrl+P, or open with ?print / ?print=front / ?print=back)
+   ========================================================================== */
+@page {
+  size: 96mm 61mm;
+  margin: 0;
+}
+
+html.print-mode {
+  --bleed: 18.667px;
+  --print-trim-h: 342.222px;
+  --print-zoom: 0.607425;
+}
+
+html.print-only-front,
+html.print-only-back {
+  --print-zoom: 1;
+}
+
+html.print-mode,
+html.print-mode body {
+  display: block;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  background: #ffffff;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+html.print-mode .stage,
+html.print-mode .card-viewport-box,
+html.print-mode .card-scene,
+html.print-mode .business-card {
+  position: static;
+  display: block;
+  width: auto;
+  height: auto;
+  transform: none !important;
+  perspective: none;
+  transform-style: flat;
+  will-change: auto;
+}
+
+html.print-mode .card-swipe-overlay {
+  display: none !important;
+}
+
+html.print-mode .card-face {
+  position: relative;
+  inset: auto;
+  width: calc(560px + 2 * var(--bleed));
+  height: calc(var(--print-trim-h) + 2 * var(--bleed));
+  padding: calc(24px + var(--bleed)) calc(28px + var(--bleed)) calc(20px + var(--bleed));
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  transform: none;
+  backface-visibility: visible;
+  -webkit-backface-visibility: visible;
+  zoom: var(--print-zoom);
+  break-after: page;
+  page-break-after: always;
+}
+
+html.print-mode .card-face--back {
+  padding: calc(24px + var(--bleed)) calc(28px + var(--bleed)) calc(20px + var(--bleed));
+  break-after: auto;
+  page-break-after: auto;
+}
+
+html.print-mode .card-accent-bar {
+  height: calc(4px + var(--bleed));
+}
+
+html.print-only-front .card-face--back,
+html.print-only-back .card-face--front {
+  display: none;
+}

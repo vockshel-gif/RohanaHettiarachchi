@@ -7,6 +7,26 @@
   <title>Rohana Hettiarachchi — Wealth Planner's Manager | AIA Insurance Lanka</title>
   <meta name="description" content="Rohana Hettiarachchi — Wealth Planner's Manager at AIA Insurance Lanka Limited. Healthier, Longer, Better Lives." />
 
+  <script>
+    /* Print sheet mode: ?print (both sides, 96 x 61 mm pages incl. 3 mm bleed), ?print=front, ?print=back, ?print=pdf (export helper) */
+    (function () {
+      var root = document.documentElement;
+      var mode = new URLSearchParams(location.search).get('print');
+      if (mode !== null) {
+        root.classList.add('print-mode');
+        if (mode === 'front' || mode === 'back') root.classList.add('print-only-' + mode);
+        if (mode === 'pdf') {
+          /* Oversized page for exact-size PDF export; the export script crops each page to 96 x 61 mm */
+          var pageStyle = document.createElement('style');
+          pageStyle.textContent = '@page { size: 110mm 75mm; margin: 0; }';
+          document.addEventListener('DOMContentLoaded', function () { document.head.appendChild(pageStyle); });
+        }
+      }
+      window.addEventListener('beforeprint', function () { root.classList.add('print-mode'); });
+      window.addEventListener('afterprint', function () { if (mode === null) root.classList.remove('print-mode'); });
+    })();
+  </script>
+
   <link rel="preload" as="image" href="Profile.jpg" fetchpriority="high" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -611,6 +631,92 @@
       text-decoration: none;
       margin-top: 1px;
     }
+
+    /* ==========================================================================
+       PRINT SHEET — 90 x 55 mm card (+3 mm bleed), one side per 96 x 61 mm page
+       (Ctrl+P, or open with ?print / ?print=front / ?print=back)
+       ========================================================================== */
+    @page {
+      size: 96mm 61mm;
+      margin: 0;
+    }
+
+    html.print-mode {
+      --bleed: 20px;
+      --print-trim-h: 366.667px;
+      --print-zoom: 0.566929;
+    }
+
+    html.print-only-front,
+    html.print-only-back {
+      --print-zoom: 1;
+    }
+
+    html.print-mode,
+    html.print-mode body {
+      display: block;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      background: #ffffff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    html.print-mode .stage,
+    html.print-mode .card-viewport-box,
+    html.print-mode .card-scene,
+    html.print-mode .business-card {
+      position: static;
+      display: block;
+      width: auto;
+      height: auto;
+      transform: none !important;
+      perspective: none;
+      transform-style: flat;
+      will-change: auto;
+    }
+
+    html.print-mode .card-swipe-overlay {
+      display: none !important;
+    }
+
+    html.print-mode .card-face {
+      position: relative;
+      inset: auto;
+      width: calc(600px + 2 * var(--bleed));
+      height: calc(var(--print-trim-h) + 2 * var(--bleed));
+      padding: calc(20px + var(--bleed)) calc(28px + var(--bleed)) calc(17px + var(--bleed));
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      transform: none;
+      backface-visibility: visible;
+      -webkit-backface-visibility: visible;
+      zoom: var(--print-zoom);
+      break-after: page;
+      page-break-after: always;
+    }
+
+    html.print-mode .card-face--back {
+      padding: calc(14px + var(--bleed)) calc(20px + var(--bleed)) calc(12px + var(--bleed));
+      break-after: auto;
+      page-break-after: auto;
+    }
+
+    html.print-mode .card-accent-bar {
+      height: calc(4.5px + var(--bleed));
+    }
+
+    html.print-mode .card-bottom-bar {
+      height: calc(4.5px + var(--bleed));
+    }
+
+    html.print-only-front .card-face--back,
+    html.print-only-back .card-face--front {
+      display: none;
+    }
+
   </style>
 </head>
 <body>

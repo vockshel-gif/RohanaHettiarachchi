@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#F3F5F8" />
+  <title>Business Card Manager | Rohana Hettiarachchi</title>
+  <meta name="description" content="Share links, email signatures and print-ready PDFs for Rohana Hettiarachchi's three business cards." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f2547'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' text-anchor='middle' fill='%23fff'%3ERH%3C/text%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       Business Card Manager — one place to share every card
+       Copy link • Copy email signature (Gmail / Outlook) • Download print PDF
+       ========================================================================== */
+
+    :root {
+      --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+      --bg: #F3F5F8;
+      --surface: #FFFFFF;
+      --surface-2: #F7F9FB;
+      --stage: #E9EEF3;
+      --text: #0F172A;
+      --text-2: #334155;
+      --muted: #64748B;
+      --border: #E2E8F0;
+      --border-strong: #CBD5E1;
+      --success: #15803D;
+      --success-soft: #DCFCE7;
+      --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -12px rgba(15, 23, 42, 0.14);
+      --shadow-card: 0 12px 28px -14px rgba(15, 23, 42, 0.45);
+      --radius: 18px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0B1220;
+        --surface: #111A2B;
+        --surface-2: #162236;
+        --stage: #0E1726;
+        --text: #E8EEF6;
+        --text-2: #C3CEDC;
+        --muted: #8A9AB0;
+        --border: #22324A;
+        --border-strong: #2E4262;
+        --success: #4ADE80;
+        --success-soft: rgba(74, 222, 128, 0.14);
+        --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+        --shadow-card: 0 14px 30px -14px rgba(0, 0, 0, 0.8);
+      }
+
+      /* the Rohana navy is too dark to read on a dark page */
+      .card-panel[data-card="rohana"] {
+        --accent: #3E6DB5 !important;
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 2.5px solid #2563EB;
+      outline-offset: 2px;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 56px;
+    }
+
+    /* ---------------------------------------------------------------- header */
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .page-title {
+      margin-top: 6px;
+      font-family: var(--font-heading);
+      font-size: clamp(1.7rem, 3vw, 2.25rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .page-lead {
+      margin-top: 8px;
+      max-width: 620px;
+      color: var(--text-2);
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .header-meta img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 18%;
+    }
+
+    .header-meta strong {
+      display: block;
+      font-size: 0.92rem;
+      line-height: 1.2;
+    }
+
+    .header-meta span {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ---------------------------------------------------------------- card grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .card-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent) 0 70%, var(--accent-2) 70% 100%);
+      z-index: 2;
+    }
+
+    /* preview */
+    .panel-preview {
+      position: relative;
+      aspect-ratio: 16 / 11;
+      background:
+        radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--muted) 22%, transparent) 1px, transparent 1.5px) 0 0 / 16px 16px,
+        var(--stage);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .preview-frame {
+      position: absolute;
+      inset: 26px 24px 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-img {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: var(--shadow-card);
+      background: #FFFFFF;
+      animation: previewIn 0.28s ease;
+    }
+
+    .preview-img[hidden] {
+      display: none;
+    }
+
+    @keyframes previewIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .side-toggle {
+      position: absolute;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      display: inline-flex;
+      padding: 3px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .side-toggle button {
+      border: 0;
+      background: transparent;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .side-toggle button[aria-pressed="true"] {
+      background: var(--accent);
+      color: #FFFFFF;
+    }
+
+    /* body */
+    .panel-body {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 20px 20px 18px;
+      flex: 1;
+    }
+
+    .panel-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .panel-kicker::before {
+      content: '';
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-2) 22%, transparent);
+    }
+
+    .panel-title {
+      margin-top: 4px;
+      font-family: var(--font-heading);
+      font-size: 1.22rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+    }
+
+    .panel-url {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      max-width: 100%;
+      margin-top: 6px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .panel-url span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .panel-url:hover {
+      color: var(--text);
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .action {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      text-align: left;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .action:hover {
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .action:active {
+      transform: scale(0.99);
+    }
+
+    .action-icon {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      background: var(--accent);
+    }
+
+    .action--pdf .action-icon {
+      background: var(--accent-2);
+      color: var(--accent-2-ink, #FFFFFF);
+    }
+
+    .action-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .action-text strong {
+      font-size: 0.94rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .action-text small {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .action-check {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--success);
+      background: var(--success-soft);
+      padding: 3px 8px;
+      border-radius: 999px;
+      opacity: 0;
+      transform: translateY(-40%);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      pointer-events: none;
+    }
+
+    .action.is-done .action-check {
+      opacity: 1;
+      transform: translateY(-50%);
+    }
+
+    .panel-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border);
+      font-size: 0.82rem;
+    }
+
+    .panel-links a,
+    .panel-links button {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--muted);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .panel-links a:hover,
+    .panel-links button:hover {
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ---------------------------------------------------------------- help */
+    .help {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 28px;
+    }
+
+    .help-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .help-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .help-card ol,
+    .help-card ul {
+      margin-top: 12px;
+      padding-left: 20px;
+      color: var(--text-2);
+      font-size: 0.9rem;
+      display: grid;
+      gap: 6px;
+    }
+
+    .help-card b {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    kbd {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 5px;
+      border: 1px solid var(--border-strong);
+      border-bottom-width: 2px;
+      background: var(--surface-2);
+    }
+
+    .page-footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ---------------------------------------------------------------- toast */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: min(92vw, 520px);
+      padding: 12px 18px;
+      border-radius: 14px;
+      background: #0F172A;
+      color: #F8FAFC;
+      font-size: 0.9rem;
+      box-shadow: 0 18px 40px -12px rgba(15, 23, 42, 0.55);
+      transform: translate(-50%, 16px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .toast.is-visible {
+      transform: translate(-50%, 0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .toast.is-error {
+      background: #991B1B;
+    }
+
+    /* off-screen container for the rich-text copy fallback */
+    #copyBuffer {
+      position: fixed;
+      left: -10000px;
+      top: 0;
+      width: 600px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ---------------------------------------------------------------- responsive */
+    @media (max-width: 1060px) {
+      .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .page {
+        padding: 28px 16px 40px;
+      }
+
+      .card-grid,
+      .help {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .header-meta {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Business Card Manager</p>
+        <h1 class="page-title">Share every card in one click</h1>
+        <p class="page-lead">Copy a card's link, copy its email signature for Gmail or Outlook, or download the print-ready PDF for your printer.</p>
+      </div>
+      <div class="header-meta">
+        <img src="Profile.jpg" alt="" />
+        <div>
+          <strong>Rohana Hettiarachchi</strong>
+          <span>3 business cards</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="card-grid" aria-label="Business cards">
+
+      <!-- ================= Rohana Hettiarachchi & Company ================= -->
+      <article class="card-panel" data-card="rohana" style="--accent: #0F2547; --accent-2: #EA5B2B;">
+        <div class="panel-preview">
+          <div class="preview-frame">
+            <img class="preview-img" data-side="front" src="previews/rohana-front.jpg" alt="Front of the Rohana Hettiarachchi &amp; Company card" />
+            <img class="preview-img" data-side="back" src="previews/rohana-back.jpg" alt="Back of the Rohana Hettiarachchi &amp; Company card" hidden loading="lazy" />
+          </div>
+          <div class="side-toggle" role="group" aria-label="Card side">
+            <button type="button" data-show="front" aria-pressed="true">Front</button>
+            <button type="button" data-show="back" aria-pressed="false">Back</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div>
+            <p class="panel-kicker">Chartered Accountants</p>
+            <h2 class="panel-title">Rohana Hettiarachchi &amp; Company</h2>
+            <a class="panel-url" href="index.html" target="_blank" rel="noopener"><span data-url-text></span></a>
+          </div>
+          <div class="actions">
+            <button type="button" class="action" data-action="link">
+              <span class="action-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+              <span class="action-text"><strong>Copy link</strong><small>Share the digital card</small></span>
+              <span class="action-check">Copied</span>
+            </button>
+            <button type="button" class="action" data-action="email">
+              <span class="action-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+              <span class="action-text"><strong>Copy email signature</strong><small>Photo + QR code, paste into Gmail</small></span>
+              <span class="action-check">Copied</span>
+            </button>
+            <a class="action action--pdf" href="print/rohana-hettiarachchi-company-card-print-90x55mm.pdf" download="Rohana-Hettiarachchi-Company-Card-Print-90x55mm.pdf" data-action="pdf">
+              <span class="action-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+              <span class="action-text"><strong>Download print PDF</strong><small>90 × 55 mm, front + back, 3 mm bleed</small></span>
+              <span class="action-check">Downloading</span>
+            </a>
+          </div>
+          <div class="panel-links">
+            <a href="index.html" target="_blank" rel="noopener">Open card ↗</a>
+            <a href="qr-card.html" target="_blank" rel="noopener">Email preview ↗</a>
+            <button type="button" data-action="html">Copy HTML code</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ================= AIA Insurance ================= -->
+      <article class="card-panel" data-card="aia" style="--accent: #B30E35; --accent-2: #840A27;">
+        <div class="panel-preview">
+          <div class="preview-frame">
+            <img class="preview-img" data-side="front" src="previews/aia-front.jpg" alt="Front of the AIA Insurance card" />
+            <img class="preview-img" data-side="back" src="previews/aia-back.jpg" alt="Back of the AIA Insurance card" hidden loading="lazy" />
+          </div>
+          <div class="side-toggle" role="group" aria-label="Card side">
+            <button type="button" data-show="front" aria-pressed="true">Front</button>
+            <button type="button" data-show="back" aria-pressed="false">Back</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div>
+            <p class="panel-kicker">Wealth Planner's Manager</p>
+            <h2 class="panel-title">AIA Insurance Lanka</h2>
+            <a class="panel-url" href="aia.html" target="_blank" rel="noopener"><span data-url-text></span></a>
+          </div>
+          <div class="actions">
+            <button type="button" class="action" data-action="link">
+              <span class="action-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+              <span class="action-text"><strong>Copy link</strong><small>Share the digital card</small></span>
+              <span class="action-check">Copied</span>
+            </button>
+            <button type="button" class="action" data-action="email">
+              <span class="action-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+              <span class="action-text"><strong>Copy email signature</strong><small>Photo + QR code, paste into Gmail</small></span>
+              <span class="action-check">Copied</span>
+            </button>
+            <a class="action action--pdf" href="print/aia-card-print-90x55mm.pdf" download="AIA-Rohana-Hettiarachchi-Card-Print-90x55mm.pdf" data-action="pdf">
+              <span class="action-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+              <span class="action-text"><strong>Download print PDF</strong><small>90 × 55 mm, front + back, 3 mm bleed</small></span>
+              <span class="action-check">Downloading</span>
+            </a>
+          </div>
+          <div class="panel-links">
+            <a href="aia.html" target="_blank" rel="noopener">Open card ↗</a>
+            <a href="aia-qr-card.html" target="_blank" rel="noopener">Email preview ↗</a>
+            <button type="button" data-action="html">Copy HTML code</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ================= Sunbird Lanka Tours ================= -->
+      <article class="card-panel" data-card="sunbird" style="--accent: #0F70B8; --accent-2: #F7AC3B; --accent-2-ink: #0C3866;">
+        <div class="panel-preview">
+          <div class="preview-frame">
+            <img class="preview-img" data-side="front" src="previews/sunbird-front.jpg" alt="Front of the Sunbird Lanka Tours card" />
+            <img class="preview-img" data-side="back" src="previews/sunbird-back.jpg" alt="Back of the Sunbird Lanka Tours card: Sri Lanka tourist map" hidden loading="lazy" />
+          </div>
+          <div class="side-toggle" role="group" aria-label="Card side">
+            <button type="button" data-show="front" aria-pressed="true">Front</button>
+            <button type="button" data-show="back" aria-pressed="false">Map</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div>
+            <p class="panel-kicker">CEO &amp; Managing Director</p>
+            <h2 class="panel-title">Sunbird Lanka Tours</h2>
+            <a class="panel-url" href="sunbird.html" target="_blank" rel="noopener"><span data-url-text></span></a>
+          </div>
+          <div class="actions">
+            <button type="button" class="action" data-action="link">
+              <span class="action-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+              <span class="action-text"><strong>Copy link</strong><small>Share the digital card</small></span>
+              <span class="action-check">Copied</span>
+            </button>
+            <button type="button" class="action" data-action="email">
+              <span class="action-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+              <span class="action-text"><strong>Copy email signature</strong><small>Photo + QR code, paste into Gmail</small></span>
+              <span class="action-check">Copied</span>
+            </button>
+            <a class="action action--pdf" href="print/sunbird-card-print-50x90mm.pdf" download="Sunbird-Lanka-Tours-Rohana-Hettiarachchi-Card-Print-90x50mm.pdf" data-action="pdf">
+              <span class="action-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+              <span class="action-text"><strong>Download print PDF</strong><small>90 × 50 mm, front + map, 3 mm bleed</small></span>
+              <span class="action-check">Downloading</span>
+            </a>
+          </div>
+          <div class="panel-links">
+            <a href="sunbird.html" target="_blank" rel="noopener">Open card ↗</a>
+            <a href="sunbird-qr-card.html" target="_blank" rel="noopener">Email preview ↗</a>
+            <button type="button" data-action="html">Copy HTML code</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="help" aria-label="How to use">
+      <div class="help-card">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Add an email signature in Gmail
+        </h3>
+        <ol>
+          <li>Click <b>Copy email signature</b> on the card you want.</li>
+          <li>In Gmail, open <b>Settings → See all settings → General → Signature</b> and click <b>Create new</b>.</li>
+          <li>Click inside the signature box and press <kbd>Ctrl</kbd> + <kbd>V</kbd> (<kbd>⌘</kbd> + <kbd>V</kbd> on Mac).</li>
+          <li>Scroll down and click <b>Save Changes</b>. You can also paste it straight into a new email.</li>
+        </ol>
+      </div>
+      <div class="help-card">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Printing the hard copies
+        </h3>
+        <ul>
+          <li>Send the PDF to the printer as it is. Page 1 is the front and page 2 is the back.</li>
+          <li>Each page has <b>3 mm bleed</b> and a marked cut size, so colours run to the edge after trimming.</li>
+          <li>Rohana Hettiarachchi &amp; Company and AIA print at <b>90 × 55 mm</b>. Sunbird prints at <b>90 × 50 mm</b>; its map side is upright, so the printer turns that page.</li>
+          <li>Ask for a printed proof first: screen colours can look slightly different on paper.</li>
+        </ul>
+      </div>
+    </section>
+
+    <p class="page-footer">Rohana Hettiarachchi · Business Card Manager</p>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div id="copyBuffer" aria-hidden="true"></div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const SITE = 'https://vockshel-gif.github.io/RohanaHettiarachchi/';
+      const CARDS = {
+        rohana: { url: SITE, emailPage: 'qr-card.html', label: 'Rohana Hettiarachchi & Company' },
+        aia: { url: SITE + 'aia.html', emailPage: 'aia-qr-card.html', label: 'AIA Insurance' },
+        sunbird: { url: SITE + 'sunbird.html', emailPage: 'sunbird-qr-card.html', label: 'Sunbird Lanka Tours' }
+      };
+
+      const toast = document.getElementById('toast');
+      const copyBuffer = document.getElementById('copyBuffer');
+      const emailCache = {};
+      let toastTimer = null;
+
+      function showToast(message, isError) {
+        toast.textContent = message;
+        toast.classList.toggle('is-error', !!isError);
+        toast.classList.add('is-visible');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove('is-visible'), isError ? 6000 : 3200);
+      }
+
+      function markDone(button) {
+        if (!button) return;
+        button.classList.add('is-done');
+        clearTimeout(button.__doneTimer);
+        button.__doneTimer = setTimeout(() => button.classList.remove('is-done'), 2400);
+      }
+
+      /* ---------- email signature HTML lives in each card's email page (#emailClipboardSource) */
+      function loadEmailHtml(key) {
+        if (!emailCache[key]) {
+          emailCache[key] = fetch(CARDS[key].emailPage, { cache: 'no-cache' })
+            .then((res) => {
+              if (!res.ok) throw new Error('HTTP ' + res.status);
+              return res.text();
+            })
+            .then((text) => {
+              const doc = new DOMParser().parseFromString(text, 'text/html');
+              const source = doc.getElementById('emailClipboardSource');
+              if (!source) throw new Error('No email signature found');
+              return source.innerHTML.trim();
+            });
+          emailCache[key].then((html) => { emailCache[key].value = html; }).catch(() => { delete emailCache[key]; });
+        }
+        return emailCache[key];
+      }
+
+      /* ---------- clipboard helpers */
+      function legacyCopyText(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        let ok = false;
+        try { ok = document.execCommand('copy'); } catch (_) {}
+        document.body.removeChild(ta);
+        return ok;
+      }
+
+      async function copyText(text) {
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            return true;
+          }
+        } catch (_) {}
+        return legacyCopyText(text);
+      }
+
+      function legacyCopyRich(html) {
+        copyBuffer.innerHTML = html;
+        const range = document.createRange();
+        range.selectNodeContents(copyBuffer);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        let ok = false;
+        try { ok = document.execCommand('copy'); } catch (_) {}
+        sel.removeAllRanges();
+        copyBuffer.innerHTML = '';
+        return ok;
+      }
+
+      async function copyRich(html, plain) {
+        try {
+          if (navigator.clipboard && window.ClipboardItem && window.isSecureContext) {
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                'text/html': new Blob([html], { type: 'text/html' }),
+                'text/plain': new Blob([plain], { type: 'text/plain' })
+              })
+            ]);
+            return true;
+          }
+        } catch (_) {}
+        return legacyCopyRich(html);
+      }
+
+      /* ---------- actions */
+      async function handleAction(panel, button) {
+        const key = panel.dataset.card;
+        const card = CARDS[key];
+        const action = button.dataset.action;
+
+        if (action === 'link') {
+          if (await copyText(card.url)) {
+            markDone(button);
+            showToast(card.label + ' link copied: ' + card.url);
+          } else {
+            showToast('Could not copy automatically. The link is ' + card.url, true);
+          }
+          return;
+        }
+
+        if (action === 'email' || action === 'html') {
+          let html = emailCache[key] && emailCache[key].value;
+          try {
+            if (!html) html = await loadEmailHtml(key);
+          } catch (err) {
+            showToast('Could not load the email signature. Open this page from the website (' + SITE + 'dashboard.html) and try again.', true);
+            return;
+          }
+          const plain = 'Rohana Hettiarachchi — ' + card.label + ' digital business card: ' + card.url;
+          const ok = action === 'email' ? await copyRich(html, plain) : await copyText(html);
+          if (ok) {
+            markDone(button);
+            showToast(action === 'email'
+              ? card.label + ' email signature copied. Paste it into Gmail with Ctrl+V.'
+              : card.label + ' email HTML code copied.');
+          } else {
+            showToast('Copy was blocked by the browser. Use "Email preview" and copy from there.', true);
+          }
+          return;
+        }
+
+        if (action === 'pdf') {
+          markDone(button);
+          showToast(card.label + ' print PDF is downloading.');
+        }
+      }
+
+      document.querySelectorAll('.card-panel').forEach((panel) => {
+        const key = panel.dataset.card;
+        const urlText = panel.querySelector('[data-url-text]');
+        if (urlText) urlText.textContent = CARDS[key].url.replace(/^https:\/\//, '');
+
+        panel.querySelectorAll('[data-action]').forEach((el) => {
+          el.addEventListener('click', () => handleAction(panel, el));
+        });
+
+        panel.querySelectorAll('.side-toggle button').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const side = btn.dataset.show;
+            panel.querySelectorAll('.side-toggle button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+            panel.querySelectorAll('.preview-img').forEach((img) => { img.hidden = img.dataset.side !== side; });
+          });
+        });
+
+        // Warm the email signature so the copy happens instantly on click
+        loadEmailHtml(key).catch(() => {});
+      });
+    })();
+  </script>
+</body>
+</html>
